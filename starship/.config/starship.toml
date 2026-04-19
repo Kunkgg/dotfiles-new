@@ -1,18 +1,11 @@
+# 1. 别换行，省地方
 add_newline = false
 
+# 2. 保持符号简单，不去监听复杂的 Vim 模式切换
 [character]
 success_symbol = "[➜](bold green)"
 error_symbol = "[➜](bold red)"
-# 当进入 Vi Normal 模式时，图标变色或改变
-vimcmd_symbol = "[VIM](bold Bezier) ➜"
 
+# 3. 只有在虚拟环境里才显示 Python，平时藏起来
 [python]
-symbol = "🐍 "
-pyenv_prefix = "venv "
-# 只有在检测到虚拟环境或 .py 文件时才显示
-style = "yellow bold"
-
-[git_status]
-ahead = "⇡${count}"
-diverged = "⇕⇡${ahead_count}⇣${behind_count}"
-behind = "⇣${count}"
+detect_extensions = []
