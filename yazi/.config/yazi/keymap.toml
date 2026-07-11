@@ -1,0 +1,23 @@
+[mgr]
+prepend_keymap = [
+  # jump
+  { on = [ "g", "d" ], run = "cd ~/Downloads", desc = "跳到下载", for = "unix" },
+  { on = [ "g", "d" ], run = 'cd "D:\\Downloads"',  desc = "跳到下载", for = "windows" },
+  { on = [ "g", "r" ], run = 'shell -- ya emit cd "$(git rev-parse --show-toplevel)"' },
+
+  # shell
+  { on = [ "!" ], run = 'shell "$SHELL" --block', desc = "在这开终端", for = "unix" },
+  { on = [ "!" ], run = 'shell "pwsh" --block',   desc = "在这开终端", for = "windows" },
+
+  # plugins
+  { on = "M",      run = "plugin mount", for="unix" },
+  { on = "<C-d>",      run = "plugin diff" },
+  { on = [ "t", "g" ], run = "plugin simple-tag -- toggle-tag", desc = "切换标签（弹窗后按一个字符）" },
+  { on = [ "t", "f" ], run = "plugin simple-tag -- filter",     desc = "按标签筛选当前目录（弹窗后按字符）" },
+  { on = [ "t", "c" ], run = "plugin simple-tag -- clear",      desc = "清除选中文件的全部标签" },
+  { on = [ "t", "u" ], run = "plugin simple-tag -- toggle-ui",  desc = "切换徽章显示：图标/字符/隐藏" },
+  { on = "l", run = "plugin smart-enter",  desc = "Enter the child directory, or open the file" },
+  { on = "p", run = "plugin smart-paste",  desc = "Paste into the hovered directory or CWD" },
+  { on = [ "c", "a", "a" ], run = "plugin compress", desc = "打包选中文件" },
+]
+
