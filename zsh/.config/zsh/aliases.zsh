@@ -8,7 +8,7 @@ alias ll='eza -lh --icons=always --git'
 alias la='eza -lah --icons=always --git'
 
 # Tree view
-alias tree='eza --tree --icons'
+alias tree='eza --tree --icons=always'
 
 # Reuse ls completions for eza (avoids defining a separate completion function)
 compdef eza=ls
