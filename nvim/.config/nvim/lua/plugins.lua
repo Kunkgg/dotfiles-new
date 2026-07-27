@@ -24,6 +24,8 @@ vim.pack.add({
 -- ============================================================================
 -- PLUGIN CONFIGS
 -- ============================================================================
+-- Reference the shared augroup defined in autocmds.lua (clear=false to avoid overwriting)
+local augroup = vim.api.nvim_create_augroup("UserConfig", { clear = false })
 
 local setup_treesitter = function()
 	local treesitter = require("nvim-treesitter")
@@ -295,11 +297,7 @@ require("blink.cmp").setup({
 		},
 	},
 	sources = { default = { "lsp", "path", "buffer", "snippets" } },
-	snippets = {
-		expand = function(snippet)
-			require("luasnip").lsp_expand(snippet)
-		end,
-	},
+	snippets = { preset = "luasnip" },
 	fuzzy = {
 		implementation = "prefer_rust",
 		prebuilt_binaries = { download = true },
@@ -315,6 +313,10 @@ vim.lsp.config("lua_ls", {
 		Lua = {
 			diagnostics = { globals = { "vim" } },
 			telemetry = { enable = false },
+			workspace = {
+				library = vim.api.nvim_get_runtime_file("", true),
+				checkThirdParty = false,
+			},
 		},
 	},
 })
@@ -464,7 +466,7 @@ local function FloatingTerminal()
 	terminal_state.is_open = true
 	vim.cmd("startinsert")
 
-	local term_augroup = vim.api.nvim_create_augroup("FloatingTermLeave_" .. terminal_state.win, { clear = true })
+	local term_augroup = vim.api.nvim_create_augroup("FloatingTermLeave", { clear = true })
 	vim.api.nvim_create_autocmd("BufLeave", {
 		group = term_augroup,
 		buffer = terminal_state.buf,

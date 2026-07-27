@@ -33,7 +33,7 @@ vim.opt.concealcursor = "" -- do not hide cursorline in markup
 vim.opt.synmaxcol = 300 -- syntax highlighting limit
 vim.opt.fillchars = { eob = " " } -- hide "~" on empty lines
 
-local undodir = vim.fn.expand("~/.vim/undodir")
+local undodir = vim.fn.stdpath("data") .. "/undodir"
 if
 	vim.fn.isdirectory(undodir) == 0 -- create undodir if nonexistent
 then
@@ -51,7 +51,7 @@ vim.opt.ttimeoutlen = 50 -- key code timeout
 vim.opt.autoread = true -- auto-reload changes if outside of neovim
 vim.opt.autowrite = false -- do not auto-save
 
-vim.opt.hidden = true -- allow hidden buffers
+
 vim.opt.errorbells = false -- no error sounds
 vim.opt.backspace = "indent,eol,start" -- better backspace behaviour
 vim.opt.autochdir = false -- do not autochange directories
@@ -69,6 +69,7 @@ vim.opt.guicursor =
 vim.opt.foldmethod = "expr" -- use expression for folding
 vim.opt.foldexpr = "v:lua.vim.treesitter.foldexpr()" -- use treesitter for folding
 vim.opt.foldlevel = 99 -- start with all folds open
+vim.opt.foldcolumn = "1" -- show fold level indicator in sign column
 
 vim.opt.splitbelow = true -- horizontal splits go below
 vim.opt.splitright = true -- vertical splits go right
