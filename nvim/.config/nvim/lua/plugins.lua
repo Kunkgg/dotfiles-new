@@ -4,7 +4,8 @@
 vim.pack.add({
 	"https://www.github.com/echasnovski/mini.nvim",
 	"https://www.github.com/ibhagwan/fzf-lua",
-	"https://www.github.com/nvim-tree/nvim-tree.lua",
+	"https://github.com/nvim-lua/plenary.nvim",
+	"https://github.com/mikavilpas/yazi.nvim",
 	{
 		src = "https://github.com/nvim-treesitter/nvim-treesitter",
 		branch = "main",
@@ -78,27 +79,28 @@ end
 
 setup_treesitter()
 
-require("nvim-tree").setup({
-	view = {
-		width = 35,
-	},
-	filters = {
-		dotfiles = false,
-	},
-	renderer = {
-		group_empty = true,
+require("yazi").setup({
+	open_for_directories = false, -- set true to replace netrw for directories
+	keymaps = {
+		show_help = "<f1>",
+		-- <C-s>  : search in current directory (auto-uses fzf-lua since it's installed)
+		-- <C-v>  : open selected file(s) in vertical splits
+		-- <C-x>  : open selected file(s) in horizontal splits
+		-- <C-t>  : open selected file(s) in new tabs
+		-- <C-q>  : send selected file(s) to quickfix list
+		-- <Tab>  : jump to open Neovim buffers
 	},
 })
-vim.keymap.set("n", "<leader>e", function()
-	require("nvim-tree.api").tree.toggle()
-end, { desc = "Toggle NvimTree" })
 
-vim.api.nvim_set_hl(0, "NvimTreeNormalNC", { bg = "none" })
+vim.keymap.set("n", "<leader>e", function()
+	require("yazi").yazi()
+end, { desc = "Open yazi at current file" })
+
+vim.keymap.set("n", "<leader>E", function()
+	require("yazi").yazi(nil, vim.fn.getcwd())
+end, { desc = "Open yazi in cwd" })
+
 vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
-vim.api.nvim_set_hl(0, "NvimTreeSignColumn", { bg = "none" })
-vim.api.nvim_set_hl(0, "NvimTreeNormal", { bg = "none" })
-vim.api.nvim_set_hl(0, "NvimTreeWinSeparator", { fg = "#2a2a2a", bg = "none" })
-vim.api.nvim_set_hl(0, "NvimTreeEndOfBuffer", { bg = "none" })
 
 require("fzf-lua").setup({})
 
@@ -460,7 +462,8 @@ local function FloatingTerminal()
 
 	local has_terminal = vim.bo[terminal_state.buf].buftype == "terminal"
 	if not has_terminal then
-		vim.fn.termopen(os.getenv("SHELL"))
+		local shell = os.getenv("SHELL") or (vim.fn.has("win32") == 1 and "pwsh.exe" or "sh")
+		vim.fn.termopen(shell)
 	end
 
 	terminal_state.is_open = true

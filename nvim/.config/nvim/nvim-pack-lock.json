@@ -36,6 +36,14 @@
     "nvim-treesitter": {
       "rev": "61df84986b4b4ec469ee745a182e433d49f8c27e",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter"
+    },
+    "plenary.nvim": {
+      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
+      "src": "https://github.com/nvim-lua/plenary.nvim"
+    },
+    "yazi.nvim": {
+      "rev": "840b9792a6ec97afce384f6821e64409510d6246",
+      "src": "https://github.com/mikavilpas/yazi.nvim"
     }
   }
 }
