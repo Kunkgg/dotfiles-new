@@ -207,10 +207,28 @@ end, { desc = "Prev git hunk" })
 vim.keymap.set("n", "<leader>hs", MiniDiff.operator, { desc = "Stage hunk" })
 vim.keymap.set("n", "<leader>hp", function()
 	MiniDiff.toggle_overlay()
-end, { desc = "Preview diff overlay" })
+end, { desc = "Preview diff overlay (current file)" })
 vim.keymap.set("n", "<leader>hb", function()
 	require("mini.git").show_at_cursor()
 end, { desc = "Git blame/show" })
+
+-- Show full repo diff in a scratch buffer (all changed files at once)
+vim.keymap.set("n", "<leader>hD", function()
+	require("mini.git").show_diff_source()
+end, { desc = "Git diff (full repo, scratch buffer)" })
+
+-- Browse all changed files with inline diff preview via fzf-lua
+vim.keymap.set("n", "<leader>hv", function()
+	require("fzf-lua").git_diff({
+		untracked = true,
+		preview = "git diff --color HEAD -- {file}",
+	})
+end, { desc = "Browse changed files with diff preview" })
+
+-- Reset (discard) current hunk under cursor
+vim.keymap.set("n", "<leader>hr", function()
+	MiniDiff.operator("reset")
+end, { desc = "Reset (discard) hunk" })
 
 require("mason").setup({})
 
