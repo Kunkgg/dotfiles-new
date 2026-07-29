@@ -20,6 +20,7 @@ vim.pack.add({
 		version = vim.version.range("1.*"),
 	},
     "https://github.com/L3MON4D3/LuaSnip",
+    { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
 })
 
 -- ============================================================================
@@ -491,3 +492,10 @@ vim.keymap.set("t", "<C-q>", function()
 		terminal_state.is_open = false
 	end
 end, { noremap = true, silent = true, desc = "Close floating terminal" })
+
+require("catppuccin").setup({
+    flavour = "mocha",
+    auto_integrations = true,
+})
+
+vim.cmd.colorscheme("catppuccin")
