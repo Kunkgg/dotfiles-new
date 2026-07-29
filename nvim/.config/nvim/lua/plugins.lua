@@ -137,6 +137,54 @@ require("mini.notify").setup({})
 require("mini.icons").setup({})
 require("mini.statusline").setup({})
 
+local MiniClue = require("mini.clue")
+MiniClue.setup({
+	-- Triggers: which key prefixes open the popup
+	triggers = {
+		{ mode = "n", keys = "<leader>" },
+		{ mode = "v", keys = "<leader>" },
+		{ mode = "n", keys = "g" },
+		{ mode = "v", keys = "g" },
+		{ mode = "n", keys = "z" },
+		{ mode = "n", keys = "[" },
+		{ mode = "n", keys = "]" },
+		{ mode = "n", keys = "'" },
+		{ mode = "n", keys = "`" },
+		{ mode = "i", keys = "<C-r>" }, -- insert-mode registers
+		{ mode = "n", keys = "\"" }, -- normal-mode registers
+	},
+	-- Clues: built-in presets + custom group labels
+	clues = {
+		MiniClue.gen_clues.builtin_completion(),
+		MiniClue.gen_clues.g(),
+		MiniClue.gen_clues.marks(),
+		MiniClue.gen_clues.registers(),
+		MiniClue.gen_clues.windows(),
+		MiniClue.gen_clues.z(),
+		-- Leader group labels
+		{ mode = "n", keys = "<leader>b", desc = "+Buffer" },
+		{ mode = "n", keys = "<leader>f", desc = "+Find (fzf)" },
+		{ mode = "n", keys = "<leader>g", desc = "+Go to (LSP)" },
+		{ mode = "n", keys = "<leader>h", desc = "+Git hunks" },
+		{ mode = "n", keys = "<leader>s", desc = "+Split" },
+		{ mode = "n", keys = "<leader>d", desc = "+Diagnostics" },
+		{ mode = "n", keys = "<leader>r", desc = "+Rename" },
+		{ mode = "n", keys = "<leader>c", desc = "+Code" },
+		{ mode = "n", keys = "<leader>o", desc = "+Organize" },
+		{ mode = "n", keys = "<leader>p", desc = "+Path / Paste" },
+		{ mode = "n", keys = "<leader>t", desc = "+Toggle" },
+		{ mode = "v", keys = "<leader>p", desc = "+Paste" },
+	},
+	-- Popup window appearance
+	window = {
+		delay = 300, -- ms to wait before showing popup
+		config = {
+			border = "rounded",
+			width = "auto",
+		},
+	},
+})
+
 require("mini.diff").setup({
 	view = {
 		style = "sign",
@@ -234,11 +282,11 @@ local function lsp_on_attach(ev)
 	vim.keymap.set("n", "<leader>d", function()
 		vim.diagnostic.open_float({ scope = "cursor" })
 	end, opts)
-	vim.keymap.set("n", "<leader>nd", function()
+	vim.keymap.set("n", "]d", function()
 		vim.diagnostic.jump({ count = 1 })
 	end, opts)
 
-	vim.keymap.set("n", "<leader>pd", function()
+	vim.keymap.set("n", "[d", function()
 		vim.diagnostic.jump({ count = -1 })
 	end, opts)
 
@@ -279,7 +327,6 @@ vim.api.nvim_create_autocmd("LspAttach", { group = augroup, callback = lsp_on_at
 vim.keymap.set("n", "<leader>q", function()
 	vim.diagnostic.setloclist({ open = true })
 end, { desc = "Open diagnostic list" })
-vim.keymap.set("n", "<leader>dl", vim.diagnostic.open_float, { desc = "Show line diagnostics" })
 
 require("blink.cmp").setup({
 	keymap = {
@@ -323,13 +370,6 @@ vim.lsp.config("lua_ls", {
 		},
 	},
 })
-vim.lsp.config("pyright", {})
-vim.lsp.config("bashls", {})
-vim.lsp.config("ts_ls", {})
-vim.lsp.config("gopls", {})
-vim.lsp.config("clangd", {})
-
-
 do
 	local luacheck = require("efmls-configs.linters.luacheck")
 	local stylua = require("efmls-configs.formatters.stylua")
@@ -422,9 +462,6 @@ end, {
 	desc = "Format current buffer (or range) via LSP",
 })
 
-vim.keymap.set({ "n", "v" }, "<leader>fm", function()
-	vim.lsp.buf.format({ async = true })
-end, { desc = "Format buffer via LSP" })
 
 -- ============================================================================
 -- FLOATING TERMINAL
@@ -504,7 +541,7 @@ local function FloatingTerminal()
 	})
 end
 
-vim.keymap.set("n", "<leader>t", FloatingTerminal, { noremap = true, silent = true, desc = "Toggle floating terminal" })
+vim.keymap.set("n", "<C-`>", FloatingTerminal, { noremap = true, silent = true, desc = "Toggle floating terminal" })
 vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true, desc = "Terminal normal mode" })
 vim.keymap.set("t", "<C-q>", function()
 	if terminal_state.is_open and terminal_state.win and vim.api.nvim_win_is_valid(terminal_state.win) then
