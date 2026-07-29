@@ -39,3 +39,22 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.opt_local.spell = true
 	end,
 })
+
+-- auto-save: write when leaving insert mode or losing focus
+local function should_autosave()
+	local buf = vim.api.nvim_get_current_buf()
+	return vim.bo[buf].modified -- has unsaved changes
+		and vim.bo[buf].buftype == "" -- regular file buffer (not terminal/help/etc.)
+		and vim.bo[buf].readonly == false -- not read-only
+		and vim.api.nvim_buf_get_name(buf) ~= "" -- has a file name (not unnamed)
+end
+
+vim.api.nvim_create_autocmd({ "InsertLeave", "FocusLost" }, {
+	group = augroup,
+	desc = "Auto-save buffer",
+	callback = function()
+		if should_autosave() then
+			vim.cmd("silent! write")
+		end
+	end,
+})

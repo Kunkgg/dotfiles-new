@@ -406,6 +406,26 @@ vim.lsp.enable({
 	"efm",
 })
 
+-- :Format command — manually trigger LSP formatting for the current buffer
+vim.api.nvim_create_user_command("Format", function(args)
+	local range = nil
+	if args.count ~= -1 then
+		-- support visual range: :'<,'>Format
+		range = {
+			start = { args.line1, 0 },
+			["end"] = { args.line2, 0 },
+		}
+	end
+	vim.lsp.buf.format({ async = true, range = range })
+end, {
+	range = true,
+	desc = "Format current buffer (or range) via LSP",
+})
+
+vim.keymap.set({ "n", "v" }, "<leader>fm", function()
+	vim.lsp.buf.format({ async = true })
+end, { desc = "Format buffer via LSP" })
+
 -- ============================================================================
 -- FLOATING TERMINAL
 -- ============================================================================
