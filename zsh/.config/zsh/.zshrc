@@ -85,3 +85,16 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
+
+. "$HOME/.cargo/env"
+
+# >>> juliaup initialize >>>
+
+# !! Contents within this block are managed by juliaup !!
+
+path=('/Users/kung/.juliaup/bin' $path)
+export PATH
+# Tab completion for juliaup and julia channel selection
+[ -f "/Users/kung/.julia/juliaup/completions/zsh.zsh" ] && source "/Users/kung/.julia/juliaup/completions/zsh.zsh"
+
+# <<< juliaup initialize <<<
