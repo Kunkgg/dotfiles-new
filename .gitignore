@@ -1,3 +1,5 @@
 .DS_Store
 zsh/.config/zsh/plugins/
 nvim/.config/nvim/nvim-pack-lock.json
+.agents
+skills-lock.json

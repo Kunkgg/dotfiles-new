@@ -1,0 +1,67 @@
+{
+  "allowNonWorkspaceAccess": true,
+  "autoApproveReadOnlyCommands": true,
+  "model": "Gemini 3.6 Flash (Low)",
+  "permissions": {
+    "allow": [
+      "command(grep)",
+      "command(echo)",
+      "command(glob)",
+      "command(cat)",
+      "command(ls)",
+      "command(find)",
+      "command(pwd)",
+      "command(git add)",
+      "command(git log)",
+      "command(git status)",
+      "command(git diff)",
+      "command(git show)",
+      "command(git branch)",
+      "command(git rev-parse)",
+      "command(git remote)",
+      "command(git checkout)",
+      "command(git fetch)",
+      "command(git stash)",
+      "command(node)",
+      "command(npm test)",
+      "command(npm run)",
+      "command(npx)",
+      "command(python3)",
+      "command(python)",
+      "command(pytest)",
+      "command(cargo)",
+      "command(go)",
+      "command(eslint)",
+      "command(prettier)",
+      "command(ruff)",
+      "command(flake8)",
+      "command(mypy)",
+      "command(curl)",
+      "command(jq)",
+      "command(which)",
+      "command(make)",
+      "command(mkdir)"
+    ],
+    "deny": [
+      "read_file(**/.env*)",
+      "read_file(**/*id_rsa*)",
+      "read_file(**/*.pem)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python3 /Users/kung/.gemini/antigravity-cli/statusline.py",
+    "enabled": true
+  },
+  "terminal": {
+    "shell": "/bin/zsh",
+    "timeoutMs": 600000
+  },
+  "trustedWorkspaces": [
+    "/Users/kung/Dotfiles",
+    "/Users/kung/Repos/learn_nvim",
+    "/Users/kung/Repos/learn_npx_skills",
+    "/Users/kung/Dotfiles/nvim/.config/nvim",
+    "/Users/kung/Repos/ai-engineering-from-scratch"
+  ]
+}
