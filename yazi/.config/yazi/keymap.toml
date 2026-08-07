@@ -18,6 +18,7 @@ prepend_keymap = [
   { on = [ "t", "u" ], run = "plugin simple-tag -- toggle-ui",  desc = "切换徽章显示：图标/字符/隐藏" },
   { on = "l", run = "plugin smart-enter",  desc = "Enter the child directory, or open the file" },
   { on = "p", run = "plugin smart-paste",  desc = "Paste into the hovered directory or CWD" },
+  { on = [ "c", "r" ], run = "plugin copy-root-rel-path", desc = "复制到根目录的相对路径（git 根或绝对路径）" },
   { on = [ "c", "a", "a" ], run = "plugin compress", desc = "打包选中文件" },
 ]
 
