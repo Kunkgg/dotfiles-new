@@ -11,6 +11,9 @@ max_height = 1500
 
 
 [opener]
+browser = [
+	{ run = "open %s", desc = "用默认浏览器打开", orphan = true, for = "macos" },
+]
 edit = [
 	{ run = "${EDITOR:=vi} %s", desc = "$EDITOR", block = true },
 	{ run = "code %s", orphan = true },
@@ -31,6 +34,7 @@ subtitle = [
 
 [open]
 prepend_rules = [
+	{ url = "*.html", use = [ "browser", "edit", "reveal" ] },
 	{ url = "*.{ass,srt,ssa,sty,sup,vtt}", use = [ "subtitle", "edit", "reveal" ] },
 ]
 
