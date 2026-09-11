@@ -1,5 +1,9 @@
-# ⚠️ PROTOTYPE — wayfinder #3 的键位草案，供逐条否决。尚未在真机实测。
+# ⚠️ PROTOTYPE — wayfinder #3 的键位草案，已过人工逐条否决。尚未在真机逐键实测。
 # 落地 ticket：#5；研究依据：#2。
+#
+# 已验证：herdr config check = ok（无撞车）；wezterm 草案可加载，LEADER 22→0、
+# ALT+CTRL 10→0；ctrl+alt+数字 经 `cat -v` 实测送达（ESC+NUL），系统/wezterm 均不截获。
+# 待 #5 实测：herdr 运行时对 ESC+NUL 的解码，以及各直连键的实际行为。
 
 onboarding = false
 
@@ -23,7 +27,7 @@ focus_pane_right = ["prefix+l", "ctrl+alt+l"]
 new_tab          = ["prefix+n", "ctrl+alt+n"]        # 旧 LEADER+n
 close_pane       = ["prefix+x", "ctrl+alt+x"]        # 旧 LEADER+x
 zoom             = ["prefix+f", "ctrl+alt+f"]        # 旧 LEADER+f
-switch_tab       = ["prefix+1..9", "ctrl+alt+1..9"]  # 旧 LEADER+1..9；数字直连待实测
+switch_tab       = ["prefix+1..9", "ctrl+alt+1..9"]  # 旧 LEADER+1..9；数字直连已实测送达
 workspace_picker = "prefix+w"                        # 旧 LEADER+w
 rename_tab       = "prefix+r"                        # 旧 LEADER+r
 
