@@ -1,0 +1,45 @@
+# ⚠️ PROTOTYPE — wayfinder #3 的键位草案，供逐条否决。尚未在真机实测。
+# 落地 ticket：#5；研究依据：#2。
+
+onboarding = false
+
+[theme]
+name = "catppuccin"
+auto_switch = false
+
+[keys]
+# 【硬前提】wezterm.lua 必须删掉 config.leader。
+# 研究 #2 结论：wezterm 在 LEADER 激活时会吞掉未匹配按键（含 ctrl+a），
+# 不删则 herdr 永远收不到 ctrl+a 前缀。
+prefix = "ctrl+a"
+
+# ── A. 前缀层：动作字母对齐旧 wezterm LEADER，同行挂 ctrl+alt 直连 ──
+split_vertical   = ["prefix+v", "ctrl+alt+v"]        # 旧 LEADER+v（左右分屏）
+split_horizontal = ["prefix+c", "ctrl+alt+c"]        # 旧 LEADER+c（上下分屏）
+focus_pane_left  = ["prefix+h", "ctrl+alt+h"]        # 旧 LEADER+hjkl
+focus_pane_down  = ["prefix+j", "ctrl+alt+j"]
+focus_pane_up    = ["prefix+k", "ctrl+alt+k"]
+focus_pane_right = ["prefix+l", "ctrl+alt+l"]
+new_tab          = ["prefix+n", "ctrl+alt+n"]        # 旧 LEADER+n
+close_pane       = ["prefix+x", "ctrl+alt+x"]        # 旧 LEADER+x
+zoom             = ["prefix+f", "ctrl+alt+f"]        # 旧 LEADER+f
+switch_tab       = ["prefix+1..9", "ctrl+alt+1..9"]  # 旧 LEADER+1..9；数字直连待实测
+workspace_picker = "prefix+w"                        # 旧 LEADER+w
+rename_tab       = "prefix+r"                        # 旧 LEADER+r
+
+# ── B. 撞车 1：new_tab 占了出厂的 prefix+n，next/previous_tab 让位 ──
+# 迁到 tab 键族。同时显式清空出厂的 cycle_pane_*（hjkl 已覆盖 pane 跳转，
+# cycle 冗余），避免依赖隐式的键位优先级。实测 "" 是有效的清除写法。
+next_tab            = "prefix+tab"
+previous_tab        = "prefix+shift+tab"
+cycle_pane_next     = ""
+cycle_pane_previous = ""
+
+# ── C. 撞车 2：rename_tab 占了出厂的 prefix+r，resize_mode 让位 ──
+# wezterm 没有 resize 绑定，无对齐约束，所以挪走 herdr 独有的 resize_mode。
+resize_mode = "prefix+m"
+
+# ── D. 出厂默认原样保留（列出以便逐条否决）──
+copy_mode     = "prefix+["
+close_tab     = "prefix+shift+x"
+new_workspace = "prefix+shift+n"
