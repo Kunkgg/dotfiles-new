@@ -88,3 +88,7 @@ alias stream='mpv av://v4l2:/dev/video4 --fullscreen --demuxer-lavf-o=input_form
 # skills
 # =========================================================
 alias skills='npx skills'
+
+# claude
+alias claude="claude --permission-mode auto"
+

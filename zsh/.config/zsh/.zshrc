@@ -98,3 +98,7 @@ export PATH
 [ -f "/Users/kung/.julia/juliaup/completions/zsh.zsh" ] && source "/Users/kung/.julia/juliaup/completions/zsh.zsh"
 
 # <<< juliaup initialize <<<
+
+# >>> orbstack initialize >>>
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :
+# <<< orbstack initialize <<<

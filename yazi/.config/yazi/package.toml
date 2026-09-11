@@ -1,32 +1,32 @@
 [[plugin.deps]]
 use = "boydaihungst/simple-tag"
-rev = "e8be031"
-hash = "50ba6725b86ae62c626d27eb5836decb"
+rev = "d019de3"
+hash = "c1c9aaf057e2347942361b7155a0308c"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:git"
-rev = "65559fd"
-hash = "88e56a64b7ce7c4314427452343fef17"
+rev = "efa4d79"
+hash = "5bb0bfab901d3601c370eafdd66edd31"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:diff"
-rev = "65559fd"
-hash = "39ce0924dfe3989dc89d7caa1473c77c"
+rev = "efa4d79"
+hash = "14558d2829c0aa05e99c57de8f74d199"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-enter"
-rev = "65559fd"
+rev = "efa4d79"
 hash = "187cc58ba7ac3befd49c342129e6f1b6"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:smart-paste"
-rev = "65559fd"
+rev = "efa4d79"
 hash = "3f8d49413bc8691b4c652eb417a20178"
 
 [[plugin.deps]]
 use = "yazi-rs/plugins:mount"
-rev = "65559fd"
-hash = "e3260d0b1feded8c8e3ae3afa1169e30"
+rev = "efa4d79"
+hash = "46cbdc05596a3ecd730b288e28c7079d"
 
 [[plugin.deps]]
 use = "KKV9/compress"
