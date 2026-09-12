@@ -36,9 +36,17 @@ _Avoid_: 双绑定、键位映射
 复用器的临时按键上下文（前缀 / 工作区导航 / 复制 / 调整尺寸）。**判据是模式条**：模式激活时，模式条临时占据底部 tab row。
 _Avoid_: 状态、模式条
 
+**工作区导航模式 (Workspace-navigation mode)**:
+`workspace_picker`（`prefix+w`）打开的**模式** —— 模式条渲染为 `NAVIGATE  esc back  ↑/↓ workspace  tab pane`。它与**会话导航器**（`prefix+g`）是两个不同的界面。
+_Avoid_: navigate 模式、workspace picker 模式
+
 **会话导航器 (Session navigator)**:
 复用器里 `prefix+g` 打开的悬浮覆盖层，用于跨 workspace / tab / pane 的选择、跳转与搜索。它**不是模式**：覆盖层打开期间模式条不渲染，按键进的是覆盖层自己的输入框，而不是模式键位。
 _Avoid_: navigate 模式、导航模式
+
+**预览选中项 (Preview selection)**:
+**模式**或覆盖层里被高亮、但尚未提交的候选项。方向键只移动它、不产生切换；提交是另一次独立输入（工作区导航模式内为 `Enter`）。
+_Avoid_: 光标、选中、当前焦点
 
 **宿主原生路径 (Host-native path)**:
 宿主自己消费输入、不转发给复用器的那条路径。按住宿主的 bypass 修饰键，或复用器压根没截获该输入时，输入走这条。
