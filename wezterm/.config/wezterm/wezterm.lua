@@ -4,11 +4,11 @@ local config = wezterm.config_builder()
 -- 1. 基础 UI 与字体设置
 config.font = wezterm.font("JetBrainsMono Nerd Font Mono", { weight = "Regular" })
 config.font_size = 14.0
-config.color_scheme = "Tokyo Night" 
-
+-- 单真源调色板：herdr 的 theme.name = "terminal" 经 OSC 4/10/11 镜像这里的 ANSI 色（#4）。
+config.color_scheme = "Catppuccin Mocha"
 
 -- 窗口外观
-config.window_decorations = "RESIZE" 
+config.window_decorations = "RESIZE"
 config.initial_rows = 36
 config.initial_cols = 120
 config.window_background_opacity = 0.9
@@ -19,66 +19,34 @@ config.use_fancy_tab_bar = false
 config.send_composed_key_when_left_alt_is_pressed = false
 config.send_composed_key_when_right_alt_is_pressed = false
 
--- 3. 快捷键配置 (Tmux 风格 Leader 键)
-config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
+-- 3. wezterm 退化为纯宿主（wayfinder #5；键位归属见 #3，安全性依据见 #2）
+--
+-- 【已删除】config.leader = { key = 'a', mods = 'CTRL', ... }
+--   研究 #2 的硬前提：wezterm 在 LEADER 激活时会吞掉未匹配按键（含 ctrl+a），
+--   不删则 herdr 的 ctrl+a 前缀永远收不到。整块 LEADER+* 绑定（分屏 / 跳转 /
+--   tab / zoom / 重命名 / 1-9 / 关闭其他 pane）一并移除，职责归 herdr。
+--
+-- 【保留】wezterm 默认键 cmd+t / cmd+1-9 / cmd+w 不走 leader，不受影响 ——
+--   「多个 wezterm tab 各跑一个 herdr session」这条路仍然留着；复制 / 粘贴 /
+--   搜索 / 字体 / scrollback 的 ctrl+shift+* 也原样保留。
+--
+-- 【删除】{ key = 'c', mods = 'OPT', action = SendString '\x1bc' }
+--   RIS 终端重置在 herdr 内会连 herdr 客户端一起重置。
 config.keys = {
-  { key = 'c', mods = 'OPT', action = wezterm.action.SendString '\x1bc' },
+  -- 关掉 wezterm 自己的 ctrl+alt 分屏族 —— wezterm 不再分屏，且避免与
+  -- herdr 直连层抢语义。
+  { key = '"', mods = 'CTRL|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = '%', mods = 'CTRL|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = '"', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = '%', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = "'", mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = '5', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
 
-  -- 面板分割
-  { key = 'v', mods = 'LEADER', action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' } },
-  { key = 'c', mods = 'LEADER', action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' } },
-  
-  -- 面板跳转
-  { key = 'h', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Left' },
-  { key = 'l', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Right' },
-  { key = 'k', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Up' },
-  { key = 'j', mods = 'LEADER', action = wezterm.action.ActivatePaneDirection 'Down' },
-
-  -- 标签页管理
-  { key = 'n', mods = 'LEADER', action = wezterm.action.SpawnTab 'CurrentPaneDomain' },
-  { key = 'x', mods = 'LEADER', action = wezterm.action.CloseCurrentPane { confirm = true } },
-
-  -- 类似 Tmux 的 prefix + w 交互式导航
-  { key = 'w', mods = 'LEADER', action = wezterm.action.ShowTabNavigator },
-
-  -- Windows 与 Panel 高级管理
-  {
-    key = 'r', mods = 'LEADER',
-    action = wezterm.action.PromptInputLine {
-      description = 'Enter new name for tab',
-      action = wezterm.action_callback(function(window, pane, line)
-        if line then window:active_tab():set_title(line) end
-      end),
-    },
-  },
-  {
-    key = 'Enter', mods = 'LEADER',
-    action = wezterm.action_callback(function(window, pane) pane:move_to_new_tab() end),
-  },
-  { key = 'f', mods = 'LEADER', action = wezterm.action.TogglePaneZoomState },
-  {
-    key = 'o', mods = 'LEADER',
-    action = wezterm.action_callback(function(window, pane)
-      local tab = window:active_tab()
-      for _, p in ipairs(tab:panes()) do
-        if p:pane_id() ~= pane:pane_id() then
-          p:activate()
-          window:perform_action(wezterm.action.CloseCurrentPane { confirm = false }, p)
-        end
-      end
-      pane:activate()
-    end),
-  },
+  -- 关掉 wezterm 自己的 ctrl+alt+shift+方向键调整 pane 尺寸（herdr 负责 resize）。
+  { key = 'LeftArrow',  mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = 'RightArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = 'UpArrow',    mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+  { key = 'DownArrow',  mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
 }
 
--- 动态绑定 Leader + 1~9 快速切换 Tab
-for i = 1, 9 do
-  table.insert(config.keys, {
-    key = tostring(i),
-    mods = 'LEADER',
-    action = wezterm.action.ActivateTab(i - 1),
-  })
-end
-
 return config
-

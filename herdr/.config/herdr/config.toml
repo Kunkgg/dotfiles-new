@@ -1,0 +1,62 @@
+# herdr 配置 —— 本 repo 的配置资源（config artifact）。
+# wayfinder #5 落地：键位草案定稿于 #3，直连键安全性核查见 #2，
+# 鼠标 / 剪贴板 / 视觉归属见 #4；术语见 CONTEXT.md。
+#
+# 【硬前提】wezterm.lua 里不得再设 config.leader —— LEADER 激活时会吞掉 ctrl+a，
+# 不删则下面的 prefix 永远收不到（#2 结论）。
+#
+# 运行时状态（session.json / *.sock / *.log）留在 ~/.config/herdr/，不进 repo；
+# 本文件经文件级软链挂到 ~/.config/herdr/config.toml。
+
+onboarding = false
+
+[theme]
+# 单真源 = wezterm 的调色板：herdr 用 OSC 4/10/11 向宿主查询并镜像 ANSI 调色板。
+# 观感不满意时的回退：一行切回内建 "catppuccin"。
+name = "terminal"
+auto_switch = false
+
+[ui]
+# 显式写出出厂默认，防止上游改默认后静默推翻 #4 的决定。
+mouse_capture   = true   # 鼠标归 herdr；wezterm 原生选取走 Shift+拖拽
+copy_on_select  = true   # 拖选即进系统剪贴板（macOS 本地走 pbcopy）
+pane_scrollbars = true
+
+[keys]
+prefix = "ctrl+a"
+
+# ── A. 前缀层：动作字母对齐旧 wezterm LEADER；同行挂 ctrl+alt 直连 ──
+split_vertical   = ["prefix+v", "ctrl+alt+v"]        # 旧 LEADER+v
+split_horizontal = ["prefix+c", "ctrl+alt+c"]        # 旧 LEADER+c
+focus_pane_left  = ["prefix+h", "ctrl+alt+h"]        # 旧 LEADER+hjkl
+focus_pane_down  = ["prefix+j", "ctrl+alt+j"]
+focus_pane_up    = ["prefix+k", "ctrl+alt+k"]
+focus_pane_right = ["prefix+l", "ctrl+alt+l"]
+new_tab          = ["prefix+n", "ctrl+alt+n"]        # 旧 LEADER+n
+close_pane       = ["prefix+x", "ctrl+alt+x"]        # 旧 LEADER+x
+zoom             = ["prefix+f", "ctrl+alt+f"]        # 旧 LEADER+f
+switch_tab       = ["prefix+1..9", "ctrl+alt+1..9"]  # 旧 LEADER+1..9
+workspace_picker = "prefix+w"                        # 旧 LEADER+w
+rename_tab       = "prefix+r"                        # 旧 LEADER+r
+
+# ── B. 撞车 1：new_tab 占了出厂 next_tab 的 prefix+n，next/previous 让位到 tab 键族；
+#       同时显式清空出厂 cycle_pane_*（hjkl 已覆盖 pane 跳转，cycle 冗余）。
+next_tab            = "prefix+tab"
+previous_tab        = "prefix+shift+tab"
+cycle_pane_next     = ""
+cycle_pane_previous = ""
+
+# ── C. 撞车 2：rename_tab 占了出厂 resize_mode 的 prefix+r（rename 更常用），
+#       herdr 独有的 resize_mode 让位。
+resize_mode = "prefix+m"
+
+# ── D. 出厂默认原样保留，显式写出以便审阅 ──
+copy_mode     = "prefix+["
+close_tab     = "prefix+shift+x"
+new_workspace = "prefix+shift+n"
+
+# ── E. navigate 模式的 workspace 轴（已知问题，未在此处改设计）──
+# #5 实测：NAVIGATE 模式内 ↑/↓（以及把 navigate_workspace_up 改绑字母后）只闪光标、
+# 不位移，切 workspace 的键盘路径实际为空。该发现推翻了 #6 的前提，已按 #5 的约定
+# 拆出独立 ticket：map #1 的子票 #7「navigate 模式的 workspace 轴实测不可用」。
+# 在 #7 定案前，这里保持 #3 草案的「不写 navigate_*」状态。
