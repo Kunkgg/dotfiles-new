@@ -47,6 +47,20 @@ config.keys = {
   { key = 'RightArrow', mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
   { key = 'UpArrow',    mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
   { key = 'DownArrow',  mods = 'CTRL|SHIFT|ALT', action = wezterm.action.DisableDefaultAssignment },
+
+  -- 放开 herdr copy mode 的翻页键。本机 wezterm（20240203）默认表把
+  --   CTRL+U 绑成 CharSelect、CTRL+F 绑成 Search（新版只占 ctrl+shift+*，
+  --   此版连不带 SHIFT 的也占），herdr copy mode 的 ctrl+u/ctrl+d（半页）与
+  --   ctrl+b/ctrl+f（整页）因此永远收不到这两个键。
+  --
+  --   写法说明：此版的默认绑定以 key = 'U'（大写）+ CTRL 登记，用小写
+  --   'u' + CTRL 写 DisableDefaultAssignment 不生效（wezterm show-keys 实测）。
+  --   而大写身份与 SHIFT 变体折叠在一起，摘不掉「只带 CTRL」那一个 ——
+  --   代价是 ctrl+shift+u 的字符选择器一并失效（ctrl+shift+f 搜索同理，
+  --   但 Cmd+F 的搜索与 Cmd+* 键族都不受影响）。
+  --   顺带恢复 shell 里 ctrl+u（删至行首）/ ctrl+f（前移一字符）的原生语义。
+  { key = 'U', mods = 'CTRL', action = wezterm.action.DisableDefaultAssignment },
+  { key = 'F', mods = 'CTRL', action = wezterm.action.DisableDefaultAssignment },
 }
 
 return config
