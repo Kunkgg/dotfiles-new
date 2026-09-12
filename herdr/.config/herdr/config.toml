@@ -16,6 +16,13 @@ onboarding = false
 name = "terminal"
 auto_switch = false
 
+[theme.custom]
+# #7：terminal 主题下 selection_bg 被解析为 Reset（= 终端背景色），预览选中项因此不可见。
+# 这是对 #4「单真源 = wezterm 调色板」的定向例外 —— 取值 #313244 即 Catppuccin Mocha
+# surface0，与 wezterm 侧 color_scheme 同源；OSC 镜像机制给不出可用的选中底色，
+# 该 token 是镜像路径覆盖不到的盲点。
+selection_bg = "#313244"
+
 [ui]
 # 显式写出出厂默认，防止上游改默认后静默推翻 #4 的决定。
 mouse_capture   = true   # 鼠标归 herdr；wezterm 原生选取走 Shift+拖拽
@@ -55,8 +62,12 @@ copy_mode     = "prefix+["
 close_tab     = "prefix+shift+x"
 new_workspace = "prefix+shift+n"
 
-# ── E. navigate 模式的 workspace 轴（已知问题，未在此处改设计）──
-# #5 实测：NAVIGATE 模式内 ↑/↓（以及把 navigate_workspace_up 改绑字母后）只闪光标、
-# 不位移，切 workspace 的键盘路径实际为空。该发现推翻了 #6 的前提，已按 #5 的约定
-# 拆出独立 ticket：map #1 的子票 #7「navigate 模式的 workspace 轴实测不可用」。
-# 在 #7 定案前，这里保持 #3 草案的「不写 navigate_*」状态。
+# ── E. 工作区导航模式（prefix+w）的 workspace 轴：保持出厂，不新增绑定 ──
+# #7 定案（源码级核实，v0.9.0）：navigate_workspace_up/down 的语义是移动
+# 「预览选中项」（CONTEXT.md），不发任何切换事件；Enter 才提交为 WorkspaceFocus，
+# Esc 或前缀键取消、不切换。故出厂 ↑/↓ 语义本就正确 —— #5 观测到的「无
+# workspace.focus 事件」符合设计，不是 bug。
+# 本机原先「只闪光标、不位移」是可见性问题：terminal 主题下 selection_bg = Reset，
+# 画了等于没画；已由上面的 [theme.custom] 定向例外修掉。
+# 切 workspace 取既有两条：prefix+g（会话导航器）与 prefix+w → ↑/↓ → Enter。
+# 因此 [keys] 保持不写 navigate_*、不加 switch_workspace、不加 previous/next_workspace。
